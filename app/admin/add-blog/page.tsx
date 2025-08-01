@@ -65,7 +65,7 @@ export default function AddBlogPage() {
     });
     const data = response.data;
     console.log(data)
-    router.push("/blogs");
+    // router.push("/blogs");
   };
 
   const resethandler = () => {

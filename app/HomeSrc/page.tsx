@@ -1,6 +1,8 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import BlogCard from "@/componets/BlogCard";
 import SidebarBlogItem from "@/componets/SidebarBlogItem";
+import axios from "axios";
 
 const blogs = [
   {
@@ -31,6 +33,28 @@ const blogs = [
 ];
 
 export default function Page() {
+
+
+  const  getPost = async () => {
+    const res =  await axios.get(`/api/posts`)
+    console.log(res.data , "Ssssssssssss") 
+    
+  }
+
+  useEffect(() => {
+    getPost()
+  },[])
+
+
+
+
+
+
+
+
+
+
+
   return (
     <main className="w-full max-w-screen-xl mx-auto px-6 ">
       <section className="text-center mb-10">

@@ -13,9 +13,7 @@ export async function POST(req: NextRequest) {
   try {
     const conn = await dbconnction();
     console.log("MongoDB connected:", conn?.connection?.readyState);
-
     const postData = await req.formData();
-
     const title = postData.get("title") as string;
     const content = postData.get("content") as string;
     const tagString = postData.get("tag") as string;
@@ -51,8 +49,6 @@ export async function POST(req: NextRequest) {
       image: uploadResult.secure_url,
     });
 
-  
-
     return NextResponse.json({ success: true, blog }, { status: 201 });
   } catch (error) {
     console.error(`blog creation failed ${error}`);
@@ -61,4 +57,26 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+
+
+
+export async function GET( req : NextRequest ){
+   try {
+        const conn = await dbconnction();
+        console.log(`db concted ${conn}`);
+        const blog = await  Blogs.find();
+        console.log(blog)
+
+   
+
+    return   
+      
+
+   } catch (error) {
+    console.log(error)
+   }
+
+
 }
