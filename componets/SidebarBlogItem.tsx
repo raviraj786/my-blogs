@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Card, CardContent, Typography, Box } from "@mui/material";
 
 interface Props {
   title: string;
@@ -10,21 +11,39 @@ interface Props {
 
 export default function SidebarBlogItem({ title, image, date }: Props) {
   return (
-    <div
-      className="flex items-start gap-4 mb-4 border rounded-md p-3 cursor-pointer 
-                 hover:shadow-md hover:scale-[1.02] transition-all duration-300 ease-in-out"
+    <Card
+      className="flex items-start gap-3 mb-4 border border-gray-300 shadow-2xl cursor-pointer hover:shadow- hover:scale-[1.02] transition-all duration-300 ease-in-out"
+      sx={{
+        boxShadow: "none",
+        borderRadius: 2,
+        padding: 1,
+        
+      }}
     >
       <img
-        src={image}
+        src={image || "https://source.unsplash.com/random/100x100?blog"}
         alt={title}
-        className="w-16 h-16 object-cover rounded transition-transform duration-300"
+        style={{
+          width: 64,
+          height: 64,
+          objectFit: "cover",
+          borderRadius: 8,
+        }}
       />
-      <div>
-        <p className="text-xs text-gray-400">{date}</p>
-        <h4 className="text-sm font-medium text-gray-800">
-          {title.slice(0, 40)}...
-        </h4>
-      </div>
-    </div>
+
+      <CardContent sx={{ padding: 0 }}>
+        <Typography variant="caption" color="text.secondary">
+          {date}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.primary"
+          fontWeight={500}
+          sx={{ lineHeight: 1.3 }}
+        >
+          {title.slice(0, 50)}...
+        </Typography>
+      </CardContent>
+    </Card>
   );
 }

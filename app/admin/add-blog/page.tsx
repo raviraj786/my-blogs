@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -14,6 +13,7 @@ import {
 } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
 
 export default function AddBlogPage() {
   const router = useRouter();
@@ -23,11 +23,11 @@ export default function AddBlogPage() {
     title: "",
     content: "",
     tag: "",
-    image: "",
     date: "",
   });
 
   const [preview, setPreview] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -40,30 +40,39 @@ export default function AddBlogPage() {
     if (file) {
       const imageURL = URL.createObjectURL(file);
       setPreview(imageURL);
-      setBlog({ ...blog, image: imageURL });
+      setFile(file);
     }
   };
 
   const handleImageRemove = () => {
     setPreview("");
-    setBlog({ ...blog, image: "" });
+    setFile(null);
     if (fileRef.current) fileRef.current.value = "";
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newBlog = {
-      ...blog,
-      date: new Date().toISOString(),
-    };
+    const postData = new FormData();
+    postData.append("title", blog.title);
+    postData.append("content", blog.content);
+    postData.append("tag", blog.tag);
+    if (file) postData.append("image", file);
 
-    console.log("✅ Blog Submitted:", newBlog);
+    const response = await axios.post("/api/blogs", postData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    const data = response.data;
+    console.log(data)
     router.push("/blogs");
   };
 
   const resethandler = () => {
-    console.log("first");
-    setBlog({});
+    setBlog({ title: "", content: "", tag: "" });
+    setPreview("");
+    setFile(null);
+    if (fileRef.current) fileRef.current.value = "";
   };
 
   return (
@@ -133,9 +142,6 @@ export default function AddBlogPage() {
               onChange={handleImageUpload}
             />
           </Box>
-          {/* Title */}
-
-          {/* Content */}
           <TextField
             label="Blog Content"
             name="content"
@@ -147,7 +153,6 @@ export default function AddBlogPage() {
             variant="outlined"
           />
 
-          {/* Tag */}
           <TextField
             label="Tags (comma separated)"
             name="tag"
@@ -157,7 +162,6 @@ export default function AddBlogPage() {
             variant="outlined"
           />
 
-          {/* Buttons */}
           <Box display="flex" justifyContent="center" gap={2} pt={2}>
             <Button
               variant="outlined"
