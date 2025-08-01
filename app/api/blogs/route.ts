@@ -62,21 +62,30 @@ export async function POST(req: NextRequest) {
 
 
 
-export async function GET( req : NextRequest ){
-   try {
-        const conn = await dbconnction();
-        console.log(`db concted ${conn}`);
-        const blog = await  Blogs.find();
-        console.log(blog)
+export async function GET(req: NextRequest) {
 
-   
+  const conn = await dbconnction();
+  console.log("mongo connected")
+  try {
+    const searchParams = req.nextUrl.searchParams;
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "6");
+    const skip = (page - 1) * limit;
 
-    return   
-      
+    const blogs = await Blogs.find().skip(skip).limit(limit).sort({ createdAt: -1 });
+    const totalblogs = await Blogs.countDocuments();
+    const totalpage = await Math.ceil(totalblogs / limit);
 
-   } catch (error) {
+    return NextResponse.json({
+      success: true,
+      page,
+      totalpage,
+      totalblogs,
+      blogs,
+      status: 200
+    })
+  } catch (error) {
     console.log(error)
-   }
-
-
+    return NextResponse.json(`api not working ${error}`, { status: 500 })
+  }
 }
