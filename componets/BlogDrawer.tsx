@@ -19,15 +19,13 @@ export default function BlogDrawer({
   title,
   content,
   image,
-  date,
+  createdAt,
 }: Props) {
   return (
     <div
-      className={`fixed inset-0 z-50 bg-white transition-all duration-300 ${
-        open
-          ? "opacity-100 pointer-events-auto"
-          : "opacity-0 pointer-events-none"
-      } h-screen overflow-y-auto hide-scrollbar`}
+     className={`fixed inset-0 z-50 bg-white transition-transform duration-300 transform ${
+  open ? "translate-y-0" : "translate-y-full"
+} h-screen overflow-y-auto hide-scrollbar`}
     >
       <Box sx={{ display: "flex", justifyContent: "flex-end", p: 2 }}>
         <IconButton onClick={onClose}>
@@ -37,9 +35,9 @@ export default function BlogDrawer({
 
       <div className="max-w-5xl mx-auto px-6 py-4 pb-20">
         <div className="flex items-center gap-4 mb-6">
-          <Image src="/logo.svg" alt="Company Logo" width={50} height={50} />
+          <Image src="/logo.svg" alt="Companylogo" width={50} height={50} />
           <div>
-            <h1 className="text-3xl font-bold">{title}</h1>
+            <h1 className="text-3xl font-bold ">{title}</h1>
             <p className="text-sm text-gray-500">
               by TechBlog Inc — Explore the latest insights
             </p>
@@ -59,7 +57,14 @@ export default function BlogDrawer({
         </div>
 
         <div className="flex justify-end  mt-10">
-          <p className="mr-2  content-around">{date}</p>
+          <p className="mr-2  content-around">{new Date(createdAt).toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}</p>
           <button
             className="px-5 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
             onClick={onClose}

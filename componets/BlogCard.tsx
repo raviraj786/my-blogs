@@ -10,16 +10,21 @@ import {
   Typography,
 } from "@mui/material";
 
-import BlogDrawer from "./BlogDrawer"; // Adjust path as needed
+import BlogDrawer from "./BlogDrawer";
 
 interface Props {
   title: string;
   image: string;
-  date: string;
+  createdAt: string;
   content: string;
 }
 
-export default function SidebarBlogItem({ title, image, date, content }: Props) {
+export default function SidebarBlogItem({
+  title,
+  image,
+  createdAt,
+  content,
+}: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -49,18 +54,26 @@ export default function SidebarBlogItem({ title, image, date, content }: Props) 
         <CardActions>
           <Button size="small">Share</Button>
           <Button size="small">Learn More</Button>
-          <p className="text-xs text-gray-400 ml-2">{date}</p>
+          <p className="text-xs text-gray-400 ml-2">
+            {new Date(createdAt).toLocaleString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })}
+          </p>
         </CardActions>
       </Card>
 
-    
       <BlogDrawer
         open={open}
         onClose={() => setOpen(false)}
         image={image}
         title={title}
         content={content}
-        date={date}
+        createdAt={createdAt}
       />
     </>
   );

@@ -27,6 +27,8 @@ const BlogPage = () => {
         );
         const fetchedBlogs = res.data.blogs;
 
+        console.log(fetchBlogs , "fetch data")
+
         setBlogs((prev) =>
           reset ? fetchedBlogs : [...prev, ...fetchedBlogs]
         );
@@ -148,7 +150,7 @@ const HeaderSection = ({
   </section>
 );
 
-// Sidebar Section
+
 const SidebarSection = ({
   title,
   blogs,
